@@ -1,40 +1,53 @@
-defmodule BankStatementReader.Transcation do 
-  defstruct TRNTYPE: "", DTPOSTED: "", TRNAMT: "", MEMO: ""
-end
-
 defmodule BankStatementReader do
   require Record
   Record.defrecord :xmlElement, Record.extract(:xmlElement, from_lib: "xmerl/include/xmerl.hrl")
   Record.defrecord :xmlText,    Record.extract(:xmlText,    from_lib: "xmerl/include/xmerl.hrl")
 
-  def parse do    
+  def read_ofx do
     File.read!('example.ofx')
-    |> scan_text
-    |> parse_xml
   end
 
-  def scan_text(text) do
-    :xmerl_scan.string(String.to_char_list(text))
+  def run do
+    {doc, _} = read_ofx() |> :binary.bin_to_list |> :xmerl_scan.string
+
+    transcation_elements = :xmerl_xpath.string('//STMTTRN', doc)
+
+    transcations = Enum.map(transcation_elements, fn element -> 
+      parse(xmlElement(element, :content))
+    end)
+
+    IO.inspect transcations
   end
 
-  def parse_xml({xml, _}) do
-    IO.inspect %BankStatementReader.Transcation{
-      TRNTYPE:  get_value_tag('TRNTYPE', xml),
-      DTPOSTED: get_value_tag('DTPOSTED', xml),
-      TRNAMT:   get_value_tag('TRNAMT', xml),        
-      MEMO:     get_value_tag('MEMO', xml)        
-    }    
-  end
+  def parse(node) do
+    cond do 
+      Record.is_record(node, :xmlElement) ->
+        name    = xmlElement(node, :name)
+        content = xmlElement(node, :content)
+        Map.put(%{}, name, parse(content))
 
-  def get_value_tag(name, xml) do
-    [ element ] = :xmerl_xpath.string('/OFX/BANKMSGSRSV1/STMTTRNRS/STMTRS/BANKTRANLIST/STMTTRN[1]/#{name}', xml)
-    [ text ]    = xmlElement(element, :content)
-    value       = xmlText(text, :value)
-    
-    to_string(value)
+      Record.is_record(node, :xmlText) ->
+        xmlText(node, :value) |> to_string
+
+      is_list(node) -> 
+        case Enum.map(node, &(parse(&1))) do
+          [text_content] when is_binary(text_content) ->
+            text_content
+
+
+          elements -> Enum.reduce(elements, %{}, fn (x, acc) ->
+            if is_map(x) do
+              Map.merge(acc, x)
+            else
+              acc
+            end
+          end)
+        end
+
+      true -> "Not supported to parse #{inspect node}"
+    end
   end
 end
 
 
-
-BankStatementReader.parse()
+BankStatementReader.run
