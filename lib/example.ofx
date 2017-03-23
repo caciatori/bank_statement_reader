@@ -1,0 +1,61 @@
+<OFX>
+  <SIGNONMSGSRSV1>
+    <SONRS>
+      <STATUS>
+        <CODE>0</CODE>
+        <SEVERITY>INFO</SEVERITY>
+      </STATUS>
+      <DTSERVER>20170319171509[-3:BRT]</DTSERVER>
+      <LANGUAGE>POR</LANGUAGE>
+      <FI>
+        <ORG>Banco Cooperativo do Brasil</ORG>
+        <FID>756</FID>
+      </FI>
+    </SONRS>
+  </SIGNONMSGSRSV1>
+  <BANKMSGSRSV1>
+    <STMTTRNRS>
+      <TRNUID>ef443656-0e1d-4bb0-aaa8-73e4f4765b1e</TRNUID>
+      <STATUS>
+        <CODE>0</CODE>
+        <SEVERITY>INFO</SEVERITY>
+      </STATUS>
+      <STMTRS>
+        <CURDEF>BRL</CURDEF>
+        <BANKACCTFROM>
+          <BANKID>756</BANKID>
+          <BRANCHID>4302</BRANCHID>
+          <ACCTID>9742883</ACCTID>
+          <ACCTTYPE>CHECKING</ACCTTYPE>
+        </BANKACCTFROM>
+        <BANKTRANLIST>
+          <DTSTART>20170301000000[-3:BRT]</DTSTART>
+          <DTEND>20170301000000[-3:BRT]</DTEND>
+          <STMTTRN>
+            <TRNTYPE>DEBIT</TRNTYPE>
+            <DTPOSTED>20170301000000[-3:BRT]</DTPOSTED>
+            <TRNAMT>-50.00</TRNAMT>
+            <FITID>20170301500001</FITID>
+            <CHECKNUM>3546</CHECKNUM>
+            <REFNUM>3546</REFNUM>
+            <MEMO>DEB.PARCELAS SUBSC./INTEGR.</MEMO>
+          </STMTTRN>
+          <STMTTRN>
+            <TRNTYPE>CREDIT</TRNTYPE>
+            <DTPOSTED>20170310000000[-3:BRT]</DTPOSTED>
+            <TRNAMT>92.34</TRNAMT>
+            <FITID>20170310923401</FITID>
+            <CHECKNUM>581402</CHECKNUM>
+            <REFNUM>581402</REFNUM>
+            <MEMO>CRED.DOC</MEMO>
+          </STMTTRN>
+        </BANKTRANLIST>
+        <LEDGERBAL>
+          <BALAMT>469.9</BALAMT>
+          <DTASOF>20170319171509[-3:BRT]</DTASOF>
+        </LEDGERBAL>
+      </STMTRS>
+    </STMTTRNRS>
+  </BANKMSGSRSV1>
+</OFX>
+-----------------------------284532491817008--
